@@ -9,14 +9,21 @@ export async function PUT(
   request: NextRequest, 
   { params }: RouteParams ) {
     try {
-    const { status } = await request.json();
+    const { username, title, status, deadline } = await request.json();
+
+    const selectedDate = new Date(deadline);
+    const fixedDate = new Date(Date.UTC(
+      selectedDate.getFullYear(),
+      selectedDate.getMonth(),
+      selectedDate.getDate()
+    ));
   
     if (!params.id) {
       return NextResponse.json({ error: 'Missing todo id' }, { status: 400 });
     }
     const updatedTodo = await prisma.todo.update({
       where: { id: params.id },
-      data: { status },
+      data: { username, title, status, deadline: fixedDate },
     });
 
     return NextResponse.json(updatedTodo);

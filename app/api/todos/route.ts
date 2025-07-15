@@ -25,11 +25,18 @@ export async function POST(request: NextRequest) {
             );
         }
 
+        const selectedDate = new Date(deadline);
+        const fixedDate = new Date(Date.UTC(
+          selectedDate.getFullYear(),
+          selectedDate.getMonth(),
+          selectedDate.getDate()
+        ));
+
         const todo = await prisma.todo.create({
             data: {
                 title,
                 username,
-                deadline: new Date(deadline),
+                deadline: fixedDate,
             },
         });
         return NextResponse.json(todo, { status: 201 });
