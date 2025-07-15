@@ -2,6 +2,16 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import UpdateTodoModal from "./UpdateTodoModal";
 import { Todo } from "../types/todo";
+import { Button } from "@/components/ui/button";
+import DeleteTodoDialog from "./DeleteTodoDialog";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 export default function TodoList({
   todos,
@@ -14,7 +24,7 @@ export default function TodoList({
   const [showUpdateModal, setShowUpdateModal] = useState(false);
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this todo?")) return;
+    // if (!confirm("Are you sure you want to delete this todo?")) return;
 
     try {
       const res = await fetch(`/api/todos/${id}`, {
@@ -44,13 +54,61 @@ export default function TodoList({
     setShowUpdateModal(true);
   };
 
+  const getStatusBg = (status: string) => {
+    switch (status) {
+      case "pending":
+        return "bg-stone-200 dark:bg-yellow-600";
+      case "in-progress":
+        return "bg-blue-200 dark:bg-blue-600";
+      case "completed":
+        return "bg-green-300 dark:bg-green-600";
+      default:
+        return "";
+    }
+  };
+
   if (todos.length === 0)
     return <div className="text-center text-gray-500">No todos found.</div>;
 
   return (
     <>
-      <div className="overflow-x-auto mt-6">
-        <table className="table-auto w-full border-collapse border border-gray-300 dark:border-gray-600">
+      <div className="overflow-x-auto mt-6 shadow-xl rounded-sm">
+        <Table className="table-auto border border-collapse w-full">
+          <TableHeader>
+            <TableRow className="bg-gray-100 dark:bg-gray-700">
+              <TableHead className="px-2 py-2 font-bold text-gray-700">Username</TableHead>
+              <TableHead className="px-2 py-2 font-bold text-gray-700">Title</TableHead>
+              <TableHead className="px-2 py-2 font-bold text-gray-700">Status</TableHead>
+              <TableHead className="px-2 py-2 font-bold text-gray-700">Deadline</TableHead>
+              <TableHead className="px-2 py-2 font-bold text-gray-700">Action</TableHead>
+              <TableHead className="px-2 py-2 font-bold text-gray-700">Action</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {todos.map((todo) => (
+              <TableRow key={todo.id} className={`${getStatusBg(todo.status)}`}>
+                <TableCell className="px-2 py-2">{todo.username}</TableCell>
+                <TableCell className="px-2 py-2 ">{todo.title}</TableCell>
+                <TableCell className="px-2 py-2 capitalize">{todo.status}</TableCell>
+                <TableCell className="px-2 py-2">{todo.deadline}</TableCell>
+                <TableCell className="px-2 py-2">
+                  <Button
+                    onClick={() => handleUpdateClick(todo)}
+                    className="cursor-pointer"
+                    variant="outline"
+                    size="xsm"
+                  >
+                    Update
+                  </Button>
+                </TableCell>
+                <TableCell className="px-2 py-2">
+                  <DeleteTodoDialog onConfirm={() => handleDelete(todo.id)} />
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+        {/* <table className="table-auto w-full border-collapse border border-gray-300 dark:border-gray-600">
           <thead>
             <tr className="bg-gray-200 dark:bg-gray-600">
               <th className="px-4 py-2 border">Username</th>
@@ -78,6 +136,13 @@ export default function TodoList({
                   >
                     Update
                   </button>
+                  <Button
+                    onClick={() => handleUpdateClick(todo)}
+                    className="cursor-pointer"
+                    variant="outline"
+                  >
+                    Update
+                  </Button>
                 </td>
                 <td className="px-4 py-2 border text-center">
                   <button
@@ -86,11 +151,19 @@ export default function TodoList({
                   >
                     Delete
                   </button>
+                  <Button
+                    onClick={() => handleDelete(todo.id)}
+                    className="cursor-pointer"
+                    variant="destructive"
+                  >
+                    Delete
+                  </Button>
+                  <DeleteTodoDialog onConfirm={() => handleDelete(todo.id)} />
                 </td>
               </tr>
             ))}
           </tbody>
-        </table>
+        </table> */}
       </div>
       {showUpdateModal && selectedTodo && (
         <UpdateTodoModal

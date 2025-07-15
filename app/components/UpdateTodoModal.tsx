@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { Todo } from "../types/todo";
+import { Button } from "@/components/ui/button";
 
 const statusOptions = ["pending", "in-progress", "completed"];
 
@@ -75,19 +76,21 @@ const UpdateTodoModal = ({
           </div>
 
           <div className="flex justify-end gap-2">
-            <button
+            {/* <button
               type="button"
               onClick={onClose}
               className="btn btn-error px-4 py-2"
             >
               Cancel
-            </button>
-            <button
+            </button> */}
+            <Button onClick={onClose} className="cursor-pointer">Cancel</Button>
+            {/* <button
               type="submit"
               className="btn btn-success px-4 py-2"
             >
               Update Status
-            </button>
+            </button> */}
+            <Button className="cursor-pointer" variant="success">Update Status</Button>
           </div>
         </form>
       </div>

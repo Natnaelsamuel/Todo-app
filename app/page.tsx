@@ -2,6 +2,7 @@
 import { use, useEffect, useState } from "react";
 import CreateTodoModal from "./components/CreateTodoModal";
 import TodoList from "./components/TodoList";
+import { Button } from "@/components/ui/button"
 
 export default function Home() {
   const [todos, setTodos] = useState([]);
@@ -35,7 +36,8 @@ export default function Home() {
   const filteredTodos = todos.filter(
     (todo: any) =>
       todo.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      todo.username.toLowerCase().includes(searchQuery.toLowerCase())
+      todo.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      todo.status.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -51,9 +53,10 @@ export default function Home() {
           onChange={(e) => setSearchQuery(e.target.value)}
           className="px-4 py-2 rounded-4xl w-full sm:w-64 md:w-80 lg:w-96 border shadow-lg"
         />
-        <button onClick={() => setShowModal(true)} className="btn btn-primary">
+        {/* <button onClick={() => setShowModal(true)} className="btn btn-primary">
           Create Todo
-        </button>
+        </button> */}
+        <Button onClick={() => setShowModal(true)} className="cursor-pointer">Create Todo</Button>
       </div>
 
       {isLoading ? (

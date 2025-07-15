@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
+import { Button } from "@/components/ui/button";
 
 const CreateTodoModal = ({
   onClose,
@@ -66,19 +67,22 @@ const CreateTodoModal = ({
             required
           />
           <div className="flex justify-end gap-2">
-            <button
+            {/* <button
               type="button"
               onClick={onClose}
               className="btn btn-error px-4 py-2"
             >
               Cancel
-            </button>
-            <button
-              type="submit"
-              className="btn btn-success px-4 py-2"
-            >
+            </button> */}
+            <Button type="button" variant='destructive' onClick={onClose} className="px-4 py-2 cursor-pointer">
+              Cancel
+            </Button>
+            {/* <button type="submit" className="btn btn-success px-4 py-2">
               Add Todo
-            </button>
+            </button> */}
+            <Button type="submit" className="px-4 py-2 cursor-pointer">
+              Add Todo
+            </Button>
           </div>
         </form>
       </div>
