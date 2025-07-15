@@ -57,12 +57,16 @@ export default function CreateTodoModal({
 
       if (!res.ok) throw new Error("Failed to create todo");
 
-      toast.success("Todo created successfully!");
+      toast.success("Todo created successfully!", {
+        duration: 3000,
+      });
       onClose();
       onTodoCreated();
     } catch (error) {
       console.error(error);
-      toast.error("Something went wrong while creating the todo");
+      toast.error("Something went wrong while creating the todo", {
+        duration: 3000,
+      });
     }
   };
 

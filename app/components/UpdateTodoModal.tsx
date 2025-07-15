@@ -77,12 +77,16 @@ export default function UpdateTodoModal({
 
       if (!res.ok) throw new Error("Failed to update todo");
 
-      toast.success("Todo updated successfully!");
+      toast.success("Todo updated successfully!", {
+        duration: 3000,
+      });
       onClose();
       onTodoUpdated();
     } catch (error) {
       console.error("Update error:", error);
-      toast.error("Failed to update todo");
+      toast.error("Failed to update todo", {
+        duration: 3000,
+      });
     }
   };
 
