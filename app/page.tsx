@@ -9,17 +9,22 @@ export default function Home() {
   const [showModal, setShowModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const limit = 10;
 
   useEffect(() => {
-    fetchTodos();
-  }, []);
+    fetchTodos(currentPage);
+  }, [currentPage]);
 
-  const fetchTodos = async () => {
+  const fetchTodos = async (page = 1) => {
     setIsLoading(true);
     try {
-      const res = await fetch("/api/todos");
+      const res = await fetch(`/api/todos?page=${page}&limit=${limit}`);
       const data = await res.json();
-      setTodos(data);
+      setTodos(data.todos);
+      setCurrentPage(data.currentPage);
+      setTotalPages(data.totalPages);
     } catch (error) {
       console.error("Failed to fetch todos:", error);
     } finally {
@@ -64,7 +69,11 @@ export default function Home() {
           <span className="loading loading-dots loading-lg"></span>
         </div>
       ) : (
-        <TodoList todos={filteredTodos} onTodosChange={fetchTodos} />
+        <TodoList todos={filteredTodos} currentPage={currentPage}
+          totalPages={totalPages} onPageChange={(page) => {
+            setCurrentPage(page);
+            fetchTodos(page);
+          }} onTodosChange={fetchTodos} />
       )}
 
       {showModal && (

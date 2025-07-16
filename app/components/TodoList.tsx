@@ -12,14 +12,31 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationPrevious,
+  PaginationNext,
+  PaginationLink,
+  PaginationEllipsis,
+} from "@/components/ui/pagination";
+
+interface TodoListProps {
+  todos: Todo[];
+  onTodosChange: () => void;
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
+}
 
 export default function TodoList({
   todos,
   onTodosChange,
-}: {
-  todos: Todo[];
-  onTodosChange: () => void;
-}) {
+  currentPage,
+  totalPages,
+  onPageChange,
+}: TodoListProps) {
   const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
 
@@ -72,16 +89,28 @@ export default function TodoList({
 
   return (
     <>
-      <div className="overflow-x-auto mt-6 shadow-xl rounded-sm">
+      <div className="overflow-x-auto mt-6 shadow-xl rounded-sm pb-4">
         <Table className="table-auto border border-collapse w-full">
           <TableHeader>
             <TableRow className="bg-gray-100 dark:bg-gray-700">
-              <TableHead className="px-2 py-2 font-bold text-gray-700">Username</TableHead>
-              <TableHead className="px-2 py-2 font-bold text-gray-700">Title</TableHead>
-              <TableHead className="px-2 py-2 font-bold text-gray-700">Status</TableHead>
-              <TableHead className="px-2 py-2 font-bold text-gray-700">Deadline</TableHead>
-              <TableHead className="px-2 py-2 font-bold text-gray-700">Action</TableHead>
-              <TableHead className="px-2 py-2 font-bold text-gray-700">Action</TableHead>
+              <TableHead className="px-2 py-2 font-bold text-gray-700">
+                Username
+              </TableHead>
+              <TableHead className="px-2 py-2 font-bold text-gray-700">
+                Title
+              </TableHead>
+              <TableHead className="px-2 py-2 font-bold text-gray-700">
+                Status
+              </TableHead>
+              <TableHead className="px-2 py-2 font-bold text-gray-700">
+                Deadline
+              </TableHead>
+              <TableHead className="px-2 py-2 font-bold text-gray-700">
+                Action
+              </TableHead>
+              <TableHead className="px-2 py-2 font-bold text-gray-700">
+                Action
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -89,7 +118,9 @@ export default function TodoList({
               <TableRow key={todo.id} className={`${getStatusBg(todo.status)}`}>
                 <TableCell className="px-2 py-2">{todo.username}</TableCell>
                 <TableCell className="px-2 py-2 ">{todo.title}</TableCell>
-                <TableCell className="px-2 py-2 capitalize">{todo.status}</TableCell>
+                <TableCell className="px-2 py-2 capitalize">
+                  {todo.status}
+                </TableCell>
                 <TableCell className="px-2 py-2">{todo.deadline}</TableCell>
                 <TableCell className="px-2 py-2">
                   <Button
@@ -108,6 +139,67 @@ export default function TodoList({
             ))}
           </TableBody>
         </Table>
+        <Pagination className="mt-4">
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                href="#"
+                onClick={() => onPageChange(currentPage - 1)}
+                className={
+                  currentPage === 1 ? "pointer-events-none opacity-50" : ""
+                }
+              />
+            </PaginationItem>
+
+            {Array.from({ length: totalPages }).map((_, i) => {
+              const page = i + 1;
+              const isEllipsisBefore = page === currentPage - 2 && page > 2;
+              const isEllipsisAfter =
+                page === currentPage + 2 && page < totalPages - 1;
+
+              if (isEllipsisBefore || isEllipsisAfter) {
+                return (
+                  <PaginationItem key={`ellipsis-${page}`}>
+                    <PaginationEllipsis />
+                  </PaginationItem>
+                );
+              }
+
+              if (
+                page === 1 ||
+                page === totalPages ||
+                (page >= currentPage - 1 && page <= currentPage + 1)
+              ) {
+                return (
+                  <PaginationItem key={page}>
+                    <PaginationLink
+                      href="#"
+                      isActive={page === currentPage}
+                      onClick={() => onPageChange(page)}
+                    >
+                      {page}
+                    </PaginationLink>
+                  </PaginationItem>
+                );
+              }
+
+              return null;
+            })}
+
+            <PaginationItem>
+              <PaginationNext
+                href="#"
+                onClick={() => onPageChange(currentPage + 1)}
+                className={
+                  currentPage === totalPages
+                    ? "pointer-events-none opacity-50"
+                    : ""
+                }
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+
         {/* <table className="table-auto w-full border-collapse border border-gray-300 dark:border-gray-600">
           <thead>
             <tr className="bg-gray-200 dark:bg-gray-600">
