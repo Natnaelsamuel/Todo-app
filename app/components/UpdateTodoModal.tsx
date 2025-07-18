@@ -92,7 +92,7 @@ export default function UpdateTodoModal({
 
   return (
     <div className="fixed inset-0 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="bg-white border p-6 rounded-lg w-full max-w-md shadow-lg">
+      <div className="bg-white border p-6 rounded-lg w-full max-w-md shadow-lg dark:bg-black">
         <h2 className="text-xl font-semibold mb-4">Update Todo</h2>
 
         <Form {...form}>
@@ -187,7 +187,7 @@ export default function UpdateTodoModal({
             />
 
             <div className="flex justify-end gap-2 pt-2">
-              <Button variant="destructive" type="button" onClick={onClose}>
+              <Button variant="outline" type="button" onClick={onClose}>
                 Cancel
               </Button>
               <Button type="submit">Update Todo</Button>

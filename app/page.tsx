@@ -2,7 +2,7 @@
 import { use, useEffect, useState } from "react";
 import CreateTodoModal from "./components/CreateTodoModal";
 import TodoList from "./components/TodoList";
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
   const [todos, setTodos] = useState([]);
@@ -56,12 +56,14 @@ export default function Home() {
           placeholder="Search"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="px-4 py-2 rounded-4xl w-full sm:w-64 md:w-80 lg:w-96 border shadow-lg"
+          className="px-4 py-2 rounded-4xl w-full sm:w-64 md:w-80 lg:w-96 border shadow-lg dark:border-white"
         />
         {/* <button onClick={() => setShowModal(true)} className="btn btn-primary">
           Create Todo
         </button> */}
-        <Button onClick={() => setShowModal(true)} className="cursor-pointer">Create Todo</Button>
+        <Button onClick={() => setShowModal(true)} className="cursor-pointer">
+          Create Todo
+        </Button>
       </div>
 
       {isLoading ? (
@@ -69,11 +71,16 @@ export default function Home() {
           <span className="loading loading-dots loading-lg"></span>
         </div>
       ) : (
-        <TodoList todos={filteredTodos} currentPage={currentPage}
-          totalPages={totalPages} onPageChange={(page) => {
+        <TodoList
+          todos={filteredTodos}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={(page) => {
             setCurrentPage(page);
             fetchTodos(page);
-          }} onTodosChange={fetchTodos} />
+          }}
+          onTodosChange={fetchTodos}
+        />
       )}
 
       {showModal && (

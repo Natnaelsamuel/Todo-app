@@ -72,7 +72,7 @@ export default function CreateTodoModal({
 
   return (
     <div className="fixed inset-0 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="bg-white border p-6 rounded-lg w-full max-w-md shadow-lg">
+      <div className="bg-white border p-6 rounded-lg w-full max-w-md shadow-lg dark:bg-black">
         <h2 className="text-xl font-semibold mb-4">Create New Todo</h2>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -157,7 +157,7 @@ export default function CreateTodoModal({
             /> */}
 
             <div className="flex justify-end gap-2 pt-2">
-              <Button type="button" variant='destructive' onClick={onClose}>
+              <Button type="button" variant="outline" onClick={onClose}>
                 Cancel
               </Button>
               <Button type="submit">Add Todo</Button>

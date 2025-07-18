@@ -3,6 +3,7 @@ import toast from "react-hot-toast";
 import UpdateTodoModal from "./UpdateTodoModal";
 import { Todo } from "../types/todo";
 import { Button } from "@/components/ui/button";
+import { useTheme } from "next-themes";
 import DeleteTodoDialog from "./DeleteTodoDialog";
 import {
   Table,
@@ -39,6 +40,7 @@ export default function TodoList({
 }: TodoListProps) {
   const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
+  const { theme } = useTheme();
 
   const handleDelete = async (id: string) => {
     // if (!confirm("Are you sure you want to delete this todo?")) return;
@@ -74,11 +76,11 @@ export default function TodoList({
   const getStatusBg = (status: string) => {
     switch (status) {
       case "pending":
-        return "bg-stone-200 dark:bg-yellow-600";
+        return "bg-stone-200 dark:bg-stone-600";
       case "in-progress":
-        return "bg-blue-200 dark:bg-blue-600";
+        return "bg-blue-200 dark:bg-blue-400";
       case "completed":
-        return "bg-green-300 dark:bg-green-600";
+        return "bg-green-300 dark:bg-green-500";
       default:
         return "";
     }
@@ -89,26 +91,26 @@ export default function TodoList({
 
   return (
     <>
-      <div className="overflow-x-auto mt-6 shadow-xl rounded-sm pb-4">
+      <div className="overflow-x-auto mt-6 shadow-xl rounded-sm pb-4 dark:shadow-white dark:shadow-md">
         <Table className="table-auto border border-collapse w-full">
           <TableHeader>
-            <TableRow className="bg-gray-100 dark:bg-gray-700">
-              <TableHead className="px-2 py-2 font-bold text-gray-700">
+            <TableRow className="bg-gray-100 dark:bg-black">
+              <TableHead className="px-2 py-2 font-bold text-gray-700 dark:text-gray-400">
                 Username
               </TableHead>
-              <TableHead className="px-2 py-2 font-bold text-gray-700">
+              <TableHead className="px-2 py-2 font-bold text-gray-700 dark:text-gray-400">
                 Title
               </TableHead>
-              <TableHead className="px-2 py-2 font-bold text-gray-700">
+              <TableHead className="px-2 py-2 font-bold text-gray-700 dark:text-gray-400">
                 Status
               </TableHead>
-              <TableHead className="px-2 py-2 font-bold text-gray-700">
+              <TableHead className="px-2 py-2 font-bold text-gray-700 dark:text-gray-400">
                 Deadline
               </TableHead>
-              <TableHead className="px-2 py-2 font-bold text-gray-700">
+              <TableHead className="px-2 py-2 font-bold text-gray-700 dark:text-gray-400">
                 Action
               </TableHead>
-              <TableHead className="px-2 py-2 font-bold text-gray-700">
+              <TableHead className="px-2 py-2 font-bold text-gray-700 dark:text-gray-400">
                 Action
               </TableHead>
             </TableRow>
@@ -126,7 +128,7 @@ export default function TodoList({
                   <Button
                     onClick={() => handleUpdateClick(todo)}
                     className="cursor-pointer"
-                    variant="outline"
+                    variant={theme === 'dark' ? 'default' : 'outline'}
                     size="xsm"
                   >
                     Update
