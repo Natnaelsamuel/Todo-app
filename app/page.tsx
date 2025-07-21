@@ -1,5 +1,5 @@
 "use client";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import CreateTodoModal from "./components/CreateTodoModal";
 import TodoList from "./components/TodoList";
 import { Button } from "@/components/ui/button";
@@ -41,7 +41,6 @@ export default function Home() {
   const filteredTodos = todos.filter(
     (todo: any) =>
       todo.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      todo.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
       todo.status.toLowerCase().includes(searchQuery.toLowerCase())
   );
 

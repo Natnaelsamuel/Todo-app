@@ -5,6 +5,7 @@ import NavBar from "./components/NavBar";
 import { Toaster } from "react-hot-toast";
 import Footer from "./components/Footer";
 import { ThemeProvider } from "./Providers/theme-provider";
+import AuthProvider from "./Providers/provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,17 +32,19 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <NavBar />
-          <Toaster />
-          <main className="p-10 flex-grow">{children}</main>
-          <Footer />
-        </ThemeProvider>
+        <AuthProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <NavBar />
+            <Toaster />
+            <main className="p-10 flex-grow">{children}</main>
+            <Footer />
+          </ThemeProvider>
+        </AuthProvider>
       </body>
     </html>
   );

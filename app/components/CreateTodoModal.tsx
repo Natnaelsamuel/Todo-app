@@ -21,7 +21,6 @@ import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
 
 const formSchema = z.object({
-  username: z.string().min(1, "Username is required"),
   title: z.string().min(1, "Title is required"),
   deadline: z.date().refine((date) => date > new Date(), {
     message: "Deadline must be in the future",
@@ -40,7 +39,6 @@ export default function CreateTodoModal({
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
       title: "",
     },
   });
@@ -76,19 +74,6 @@ export default function CreateTodoModal({
         <h2 className="text-xl font-semibold mb-4">Create New Todo</h2>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
-              control={form.control}
-              name="username"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Username</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Your username" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
 
             <FormField
               control={form.control}
