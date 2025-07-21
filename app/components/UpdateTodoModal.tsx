@@ -36,7 +36,6 @@ import {
 } from "@/components/ui/select";
 
 const formSchema = z.object({
-  username: z.string().min(1, "Username is required"),
   title: z.string().min(1, "Title is required"),
   status: z.enum(["pending", "in-progress", "completed"]),
   deadline: z.date().refine((date) => date > new Date(), {
@@ -60,7 +59,6 @@ export default function UpdateTodoModal({
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: todo.username,
       title: todo.title,
       status: todo.status as "pending" | "in-progress" | "completed",
       deadline: new Date(todo.deadline),
@@ -97,20 +95,6 @@ export default function UpdateTodoModal({
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
-              control={form.control}
-              name="username"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Username</FormLabel>
-                  <FormControl>
-                    <Input {...field} placeholder="Your username" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
             <FormField
               control={form.control}
               name="title"

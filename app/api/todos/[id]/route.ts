@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/prisma/client';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../../auth/[...nextauth]/route';
 
 interface RouteParams {
   params: { id: string };
@@ -9,7 +11,12 @@ export async function PUT(
   request: NextRequest, 
   { params }: RouteParams ) {
     try {
-    const { username, title, status, deadline } = await request.json();
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.email) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const { title, status, deadline } = await request.json();
 
     const selectedDate = new Date(deadline);
     const fixedDate = new Date(Date.UTC(
@@ -23,7 +30,7 @@ export async function PUT(
     }
     const updatedTodo = await prisma.todo.update({
       where: { id: params.id },
-      data: { username, title, status, deadline: fixedDate },
+      data: { title, status, deadline: fixedDate },
     });
 
     return NextResponse.json(updatedTodo);
@@ -37,6 +44,11 @@ export async function DELETE(
   request: NextRequest, 
   { params }: RouteParams ) {
     try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.email) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const id  = params.id;
     if (!id) {
       return NextResponse.json({ error: 'Missing todo id' }, { status: 400 });

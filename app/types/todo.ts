@@ -1,7 +1,6 @@
 export interface Todo {
   id: string;
   title: string;
-  username: string;
   status: string;
   deadline: string;
 }

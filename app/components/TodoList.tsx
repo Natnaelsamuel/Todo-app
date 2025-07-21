@@ -588,9 +588,9 @@ interface TodoListProps {
   onPageChange: (page: number) => void;
 }
 
-type SortField = "username" | "title" | "status" | "deadline";
+type SortField = "title" | "status" | "deadline";
 type SortDirection = "asc" | "desc";
-type GroupByField = "none" | "username" | "status" | "deadline";
+type GroupByField = "none" | "status" | "deadline";
 
 export default function TodoList({
   todos,
@@ -602,7 +602,7 @@ export default function TodoList({
   const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const { theme } = useTheme();
-  
+
   // State for sorting/grouping with localStorage persistence
   const [sortField, setSortField] = useState<SortField>("title");
   const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
@@ -615,7 +615,8 @@ export default function TodoList({
     const savedGroupBy = localStorage.getItem("todoGroupBy");
 
     if (savedSortField) setSortField(savedSortField as SortField);
-    if (savedSortDirection) setSortDirection(savedSortDirection as SortDirection);
+    if (savedSortDirection)
+      setSortDirection(savedSortDirection as SortDirection);
     if (savedGroupBy) setGroupBy(savedGroupBy as GroupByField);
   }, []);
 
@@ -672,7 +673,7 @@ export default function TodoList({
   const sortedTodos = useMemo(() => {
     return [...todos].sort((a, b) => {
       let comparison = 0;
-      
+
       if (sortField === "deadline") {
         // For dates, convert to timestamps for comparison
         const dateA = new Date(a.deadline).getTime();
@@ -684,7 +685,7 @@ export default function TodoList({
         const fieldB = b[sortField].toLowerCase();
         comparison = fieldA.localeCompare(fieldB);
       }
-      
+
       return sortDirection === "asc" ? comparison : -comparison;
     });
   }, [todos, sortField, sortDirection]);
@@ -705,7 +706,7 @@ export default function TodoList({
 
   const toggleSort = (field: SortField) => {
     if (sortField === field) {
-      setSortDirection(prev => prev === "asc" ? "desc" : "asc");
+      setSortDirection((prev) => (prev === "asc" ? "desc" : "asc"));
     } else {
       setSortField(field);
       setSortDirection("asc");
@@ -722,13 +723,15 @@ export default function TodoList({
       <div className="flex justify-end mb-4">
         <div className="flex items-center gap-2">
           <span className="text-sm font-medium">Group By:</span>
-          <Select value={groupBy} onValueChange={(v) => setGroupBy(v as GroupByField)}>
+          <Select
+            value={groupBy}
+            onValueChange={(v) => setGroupBy(v as GroupByField)}
+          >
             <SelectTrigger className="w-[120px]">
               <SelectValue placeholder="Group by" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="none">None</SelectItem>
-              <SelectItem value="username">Username</SelectItem>
               <SelectItem value="status">Status</SelectItem>
               <SelectItem value="deadline">Deadline</SelectItem>
             </SelectContent>
@@ -742,21 +745,7 @@ export default function TodoList({
           <TableHeader>
             <TableRow className="bg-gray-100 dark:bg-black">
               <TableHead className="px-2 py-2 font-bold text-gray-700 dark:text-gray-400">
-                <div 
-                  className="flex items-center cursor-pointer hover:text-gray-900 dark:hover:text-gray-200"
-                  onClick={() => toggleSort("username")}
-                >
-                  Username
-                  <ArrowUpDown className="ml-1 h-4 w-4" />
-                  {sortField === "username" && (
-                    <span className="ml-1 text-xs">
-                      {sortDirection === "asc" ? "↑" : "↓"}
-                    </span>
-                  )}
-                </div>
-              </TableHead>
-              <TableHead className="px-2 py-2 font-bold text-gray-700 dark:text-gray-400">
-                <div 
+                <div
                   className="flex items-center cursor-pointer hover:text-gray-900 dark:hover:text-gray-200"
                   onClick={() => toggleSort("title")}
                 >
@@ -770,7 +759,7 @@ export default function TodoList({
                 </div>
               </TableHead>
               <TableHead className="px-2 py-2 font-bold text-gray-700 dark:text-gray-400">
-                <div 
+                <div
                   className="flex items-center cursor-pointer hover:text-gray-900 dark:hover:text-gray-200"
                   onClick={() => toggleSort("status")}
                 >
@@ -784,7 +773,7 @@ export default function TodoList({
                 </div>
               </TableHead>
               <TableHead className="px-2 py-2 font-bold text-gray-700 dark:text-gray-400">
-                <div 
+                <div
                   className="flex items-center cursor-pointer hover:text-gray-900 dark:hover:text-gray-200"
                   onClick={() => toggleSort("deadline")}
                 >
@@ -805,23 +794,31 @@ export default function TodoList({
               </TableHead>
             </TableRow>
           </TableHeader>
-          
+
           {Object.entries(groupedTodos).map(([group, groupTodos]) => (
             <TableBody key={group}>
               {groupBy !== "none" && (
                 <TableRow className="bg-gray-200 dark:bg-gray-800">
                   <TableCell colSpan={6} className="font-bold">
-                    {groupBy === "deadline" ? new Date(group).toLocaleDateString() : group}
+                    {groupBy === "deadline"
+                      ? new Date(group).toLocaleDateString()
+                      : group}
                   </TableCell>
                 </TableRow>
               )}
               {groupTodos.map((todo) => (
-                <TableRow key={todo.id} className="hover:bg-gray-100 dark:hover:bg-gray-800">
-                  <TableCell className="px-2 py-2">{todo.username}</TableCell>
+                <TableRow
+                  key={todo.id}
+                  className="hover:bg-gray-100 dark:hover:bg-gray-800"
+                >
                   <TableCell className="px-2 py-2">{todo.title}</TableCell>
                   <TableCell className="px-2 py-2">
                     <div className="flex items-center gap-2">
-                      <span className={`w-3 h-3 rounded-full ${getStatusColor(todo.status)}`} />
+                      <span
+                        className={`w-3 h-3 rounded-full ${getStatusColor(
+                          todo.status
+                        )}`}
+                      />
                       <span className="capitalize">{todo.status}</span>
                     </div>
                   </TableCell>
