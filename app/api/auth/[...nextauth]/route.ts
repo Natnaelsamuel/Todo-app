@@ -24,7 +24,15 @@ export const authOptions: NextAuthOptions = {
                 if (!user) return null;
 
                 const passwordsMatch = await bcrypt.compare(credentials.password, user.password!);
-                return passwordsMatch ? user : null;
+                // return passwordsMatch ? user : null;
+                if (!passwordsMatch) return null;
+                
+                return {
+                    id: user.id,
+                    email: user.email,
+                    name: user.name,
+                    role: user.role // Make sure your User model has a 'role' field
+                };
             },
         }),
             GoogleProvider({
@@ -32,6 +40,20 @@ export const authOptions: NextAuthOptions = {
                 clientSecret: process.env.GOOGLE_CLIENT_SECRET!
             })
     ],
+    callbacks: {
+        async jwt({ token, user }) {
+            if (user) {
+                token.role = user.role;
+            }
+            return token;
+        },
+        async session({ session, token }) {
+            if (session.user) {
+                session.user.role = token.role; 
+            }
+            return session;
+        }
+    },
     session: {
         strategy: "jwt",
     },

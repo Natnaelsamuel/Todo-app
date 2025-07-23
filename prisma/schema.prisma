@@ -13,7 +13,6 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
-
 model Todo {
   id        String   @id @default(cuid())
   title     String
@@ -63,7 +62,7 @@ model User {
   name          String?
   email         String?   @unique
   password      String?
-  role          Role      @default(USER)
+  role          Role      @default(user)
   emailVerified DateTime? @map("email_verified")
   image         String?
   accounts      Account[]
@@ -74,8 +73,8 @@ model User {
 }
 
 enum Role {
-  USER
-  ADMIN
+  user
+  admin
 }
 
 model VerificationToken {
