@@ -8,7 +8,7 @@ const NavBar = () => {
   const pathname = usePathname();
   const { status, data: session } = useSession();
 
-  if (["/signin", "/signup", "/admin"].includes(pathname)) {
+  if (["/signin", "/signup", "/admin", "/admin/users"].includes(pathname)) {
     return null;
   }
   return (

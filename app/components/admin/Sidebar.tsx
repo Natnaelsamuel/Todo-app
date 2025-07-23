@@ -110,7 +110,7 @@ export function AdminSidebar() {
             onClick={() => setIsCollapsed(!isCollapsed)}
             className="h-8 w-8 p-0"
           >
-            {isCollapsed ? <Menu size={16} /> : <ChevronLeft size={16} />}
+            {isCollapsed ? <Menu size={18} /> : <ChevronLeft size={16} />}
           </Button>
         </div>
 
