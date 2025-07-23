@@ -41,11 +41,12 @@ export async function GET(req: NextRequest) {
     const session = await getServerSession(authOptions);
     
     // If no session, return unauthorized
-    if (!session?.user?.email) {
-      return NextResponse.json(
-        { error: "Unauthorized" },
-        { status: 401 }
-      );
+    if (!session?.user?.email || !session) {
+      // return NextResponse.json(
+      //   { error: "Unauthorized" },
+      //   { status: 401 }
+      // );
+      return NextResponse.redirect(new URL('/signin', req.url))
     }
 
     // Get pagination parameters

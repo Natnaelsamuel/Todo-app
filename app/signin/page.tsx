@@ -48,7 +48,7 @@ export default function SignInPage() {
       }
 
       toast.success("Signed in successfully!");
-      router.push("/");
+      router.push("/home");
     } catch (error) {
       console.error(error);
       toast.error("Invalid credentials. Please try again.");
@@ -116,7 +116,7 @@ export default function SignInPage() {
               <Button
                 variant="outline"
                 type="button"
-                onClick={() => signIn("google", { callbackUrl: "/" })}
+                onClick={() => signIn("google", { callbackUrl: "/home" })}
                 className="w-full flex items-center justify-center gap-2"
               >
                 <svg className="h-4 w-4" viewBox="0 0 24 24">
