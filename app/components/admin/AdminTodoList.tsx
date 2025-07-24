@@ -1,12 +1,7 @@
-import { User } from "@/app/types/user";
+import { useState, useMemo, useEffect } from "react";
+import toast from "react-hot-toast";
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { useTheme } from "next-themes";
 import {
   Table,
   TableBody,
@@ -15,45 +10,58 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationPrevious,
+  PaginationNext,
+  PaginationLink,
+  PaginationEllipsis,
+} from "@/components/ui/pagination";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
 import { ArrowUpDown } from "lucide-react";
-import { useTheme } from "next-themes";
-import React, { useEffect, useMemo, useState } from "react";
-import toast from "react-hot-toast";
+import { Todo } from "@/app/types/todo";
 import DeleteTodoDialog from "../DeleteTodoDialog";
-import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
-import UpdateUserModal from "./UpdateUserModal";
 
-interface UsersListProps {
-  users: User[];
-  onUsersChange: () => void;
+interface TodoListProps {
+  todos: Todo[];
+  onTodosChange: () => void;
   currentPage: number;
   totalPages: number;
   onPageChange: (page: number) => void;
 }
 
-type SortField = "id" | "name" | "email";
+type SortField = "title" | "status" | "deadline";
 type SortDirection = "asc" | "desc";
-type GroupByField = "none" | "name" | "role";
+type GroupByField = "none" | "status" | "deadline" | "userId";
 
-const UsersList = ({
-  users,
-  onUsersChange,
+const AdminTodoList = ({todos,
+  onTodosChange,
   currentPage,
   totalPages,
   onPageChange,
-}: UsersListProps) => {
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
-  const [showUserUpdateModal, setShowUserUpdateModal] = useState(false);
-  const { theme } = useTheme();
+}: TodoListProps) => {
+//    const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
+//   const [showUpdateModal, setShowUpdateModal] = useState(false);
+//   const { theme } = useTheme();
 
-  const [sortField, setSortField] = useState<SortField>("name");
+  // State for sorting/grouping with localStorage persistence
+  const [sortField, setSortField] = useState<SortField>("title");
   const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
   const [groupBy, setGroupBy] = useState<GroupByField>("none");
 
+  // Load saved settings from localStorage
   useEffect(() => {
-    const savedSortField = localStorage.getItem("userSortField");
-    const savedSortDirection = localStorage.getItem("userSortDirection");
-    const savedGroupBy = localStorage.getItem("userGroupBy");
+    const savedSortField = localStorage.getItem("todoSortField");
+    const savedSortDirection = localStorage.getItem("todoSortDirection");
+    const savedGroupBy = localStorage.getItem("todoGroupBy");
 
     if (savedSortField) setSortField(savedSortField as SortField);
     if (savedSortDirection)
@@ -61,78 +69,89 @@ const UsersList = ({
     if (savedGroupBy) setGroupBy(savedGroupBy as GroupByField);
   }, []);
 
+  // Save settings to localStorage when they change
   useEffect(() => {
-    localStorage.setItem("userSortField", sortField);
-    localStorage.setItem("userSortDirection", sortDirection);
-    localStorage.setItem("userGroupBy", groupBy);
+    localStorage.setItem("todoSortField", sortField);
+    localStorage.setItem("todoSortDirection", sortDirection);
+    localStorage.setItem("todoGroupBy", groupBy);
   }, [sortField, sortDirection, groupBy]);
 
   const handleDelete = async (id: string) => {
     try {
-      const res = await fetch(`/api/admin/users/${id}`, {
+      const res = await fetch(`/api/admin/todos/${id}`, {
         method: "DELETE",
       });
 
       if (res.ok) {
-        toast.success("User deleted successfully!", {
+        toast.success("Todo deleted successfully!", {
           duration: 3000,
         });
-        onUsersChange();
+        onTodosChange();
       } else {
-        toast.error("Failed to delete User.", {
+        toast.error("Failed to delete todo.", {
           duration: 3000,
         });
       }
     } catch (error) {
-      console.error("Delete User error:", error);
-      toast.error("An error occurred while deleting the User.", {
+      console.error("Delete todo error:", error);
+      toast.error("An error occurred while deleting the todo.", {
         duration: 3000,
       });
     }
   };
 
-  const handleUpdateClick = (user: User) => {
-    setSelectedUser(user);
-    setShowUserUpdateModal(true);
+//   const handleUpdateClick = (todo: Todo) => {
+//     setSelectedTodo(todo);
+//     setShowUpdateModal(true);
+//   };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "pending":
+        return "bg-stone-400 dark:bg-stone-600";
+      case "in-progress":
+        return "bg-blue-400 dark:bg-blue-600";
+      case "completed":
+        return "bg-green-400 dark:bg-green-600";
+      default:
+        return "bg-gray-400 dark:bg-gray-600";
+    }
   };
 
-  const sortedUsers = useMemo(() => {
-    return [...users].sort((a, b) => {
+  // Apply sorting
+  const sortedTodos = useMemo(() => {
+    return [...todos].sort((a, b) => {
       let comparison = 0;
 
-      if (sortField === "name" || sortField === "email") {
-        // Handle string fields
-        const fieldA = a[sortField]?.toLowerCase() || "";
-        const fieldB = b[sortField]?.toLowerCase() || "";
+      if (sortField === "deadline") {
+        // For dates, convert to timestamps for comparison
+        const dateA = new Date(a.deadline).getTime();
+        const dateB = new Date(b.deadline).getTime();
+        comparison = dateA - dateB;
+      } else {
+        // For strings
+        const fieldA = a[sortField].toLowerCase();
+        const fieldB = b[sortField].toLowerCase();
         comparison = fieldA.localeCompare(fieldB);
-      } else if (sortField === "id") {
-        // ID field (assuming string IDs)
-        comparison = a.id.localeCompare(b.id);
-
-        // If IDs are numeric:
-        // comparison = Number(a.id) - Number(b.id);
       }
-      //  else if (sortField === "status") {
-      //   // Handle boolean or enum fields
-      //   comparison = String(a[sortField]).localeCompare(String(b[sortField]));
-      // }
 
       return sortDirection === "asc" ? comparison : -comparison;
     });
-  }, [users, sortField, sortDirection]);
+  }, [todos, sortField, sortDirection]);
 
-  const groupedUsers = useMemo(() => {
-    if (groupBy === "none") return { none: sortedUsers };
+  // Group todos if needed
+  const groupedTodos = useMemo(() => {
+    if (groupBy === "none") return { none: sortedTodos };
 
-    return sortedUsers.reduce((acc, user) => {
-      const key = user[groupBy];
+    return sortedTodos.reduce((acc, todo) => {
+      const key = todo[groupBy];
       if (!acc[key]) {
         acc[key] = [];
       }
-      acc[key].push(user);
+      acc[key].push(todo);
       return acc;
-    }, {} as Record<string, User[]>);
-  }, [sortedUsers, groupBy]);
+    }, {} as Record<string, Todo[]>);
+  }, [sortedTodos, groupBy]);
 
   const toggleSort = (field: SortField) => {
     if (sortField === field) {
@@ -143,8 +162,8 @@ const UsersList = ({
     }
   };
 
-  if (users.length === 0) {
-    return <div className="text-center text-gray-500">No users found.</div>;
+  if (todos.length === 0) {
+    return <div className="text-center text-gray-500">No todos found.</div>;
   }
 
   return (
@@ -162,8 +181,9 @@ const UsersList = ({
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="none">None</SelectItem>
-              <SelectItem value="name">Name</SelectItem>
-              <SelectItem value="role">Role</SelectItem>
+              <SelectItem value="status">Status</SelectItem>
+              <SelectItem value="deadline">Deadline</SelectItem>
+              <SelectItem value="userId">UserId</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -177,11 +197,11 @@ const UsersList = ({
               <TableHead className="px-2 py-2 font-bold text-gray-700 dark:text-gray-400">
                 <div
                   className="flex items-center cursor-pointer hover:text-gray-900 dark:hover:text-gray-200"
-                  onClick={() => toggleSort("id")}
+                  onClick={() => toggleSort("title")}
                 >
-                  ID
+                  Title
                   <ArrowUpDown className="ml-1 h-4 w-4" />
-                  {sortField === "id" && (
+                  {sortField === "title" && (
                     <span className="ml-1 text-xs">
                       {sortDirection === "asc" ? "↑" : "↓"}
                     </span>
@@ -191,11 +211,11 @@ const UsersList = ({
               <TableHead className="px-2 py-2 font-bold text-gray-700 dark:text-gray-400">
                 <div
                   className="flex items-center cursor-pointer hover:text-gray-900 dark:hover:text-gray-200"
-                  onClick={() => toggleSort("name")}
+                  onClick={() => toggleSort("status")}
                 >
-                  Name
+                  Status
                   <ArrowUpDown className="ml-1 h-4 w-4" />
-                  {sortField === "name" && (
+                  {sortField === "status" && (
                     <span className="ml-1 text-xs">
                       {sortDirection === "asc" ? "↑" : "↓"}
                     </span>
@@ -205,20 +225,19 @@ const UsersList = ({
               <TableHead className="px-2 py-2 font-bold text-gray-700 dark:text-gray-400">
                 <div
                   className="flex items-center cursor-pointer hover:text-gray-900 dark:hover:text-gray-200"
-                  onClick={() => toggleSort("email")}
+                  onClick={() => toggleSort("deadline")}
                 >
-                  Email
+                  Deadline
                   <ArrowUpDown className="ml-1 h-4 w-4" />
-                  {sortField === "email" && (
+                  {sortField === "deadline" && (
                     <span className="ml-1 text-xs">
                       {sortDirection === "asc" ? "↑" : "↓"}
                     </span>
                   )}
                 </div>
               </TableHead>
-              <TableHead className="px-2 py-2 font-bold text-gray-700 dark:text-gray-400">Role</TableHead>
               <TableHead className="px-2 py-2 font-bold text-gray-700 dark:text-gray-400">
-                Action
+                UserId
               </TableHead>
               <TableHead className="px-2 py-2 font-bold text-gray-700 dark:text-gray-400">
                 Action
@@ -226,36 +245,49 @@ const UsersList = ({
             </TableRow>
           </TableHeader>
 
-          {Object.entries(groupedUsers).map(([group, groupUsers]) => (
+          {Object.entries(groupedTodos).map(([group, groupTodos]) => (
             <TableBody key={group}>
-              {group !== "none" && (
-                <TableRow className="bg-gray-200 dark:bg-gray-900">
-                  <TableCell colSpan={6} className="px-2 py-2 font-semibold">
-                    {group}
+              {groupBy !== "none" && (
+                <TableRow className="bg-gray-200 dark:bg-gray-800">
+                  <TableCell colSpan={6} className="font-bold">
+                    {groupBy === "deadline"
+                      ? new Date(group).toLocaleDateString()
+                      : group}
                   </TableCell>
                 </TableRow>
               )}
-              {groupUsers.map((user) => (
+              {groupTodos.map((todo) => (
                 <TableRow
-                  key={user.id}
+                  key={todo.id}
                   className="hover:bg-gray-100 dark:hover:bg-gray-800"
                 >
-                  <TableCell className="px-2 py-2">{user.id}</TableCell>
-                  <TableCell className="px-2 py-2">{user.name}</TableCell>
-                  <TableCell className="px-2 py-2">{user.email}</TableCell>
-                  <TableCell className="px-2 py-2">{user.role}</TableCell>
+                  <TableCell className="px-2 py-2">{todo.title}</TableCell>
                   <TableCell className="px-2 py-2">
-                    <Button
-                      onClick={() => handleUpdateClick(user)}
+                    <div className="flex items-center gap-2">
+                      <span
+                        className={`w-3 h-3 rounded-full ${getStatusColor(
+                          todo.status
+                        )}`}
+                      />
+                      <span className="capitalize">{todo.status}</span>
+                    </div>
+                  </TableCell>
+                  <TableCell className="px-2 py-2">
+                    {new Date(todo.deadline).toLocaleDateString()}
+                  </TableCell>
+                  <TableCell className="px-2 py-2">
+                    {/* <Button
+                      onClick={() => handleUpdateClick(todo)}
                       className="cursor-pointer"
                       variant={theme === "dark" ? "default" : "outline"}
                       size="xsm"
                     >
                       Update
-                    </Button>
+                    </Button> */}
+                    {todo.userId}
                   </TableCell>
                   <TableCell className="px-2 py-2">
-                    <DeleteTodoDialog onConfirm={() => handleDelete(user.id)} />
+                    <DeleteTodoDialog onConfirm={() => handleDelete(todo.id)} />
                   </TableCell>
                 </TableRow>
               ))}
@@ -325,15 +357,15 @@ const UsersList = ({
         </Pagination>
       </div>
 
-      {showUserUpdateModal && selectedUser && (
-        <UpdateUserModal
-          onClose={() => setShowUserUpdateModal(false)}
-          onUserUpdated={onUsersChange}
-          user={selectedUser}
+      {/* {showUpdateModal && selectedTodo && (
+        <UpdateTodoModal
+          onClose={() => setShowUpdateModal(false)}
+          onTodoUpdated={onTodosChange}
+          todo={selectedTodo}
         />
-      )}
+      )} */}
     </>
   );
-};
+}
 
-export default UsersList;
+export default AdminTodoList

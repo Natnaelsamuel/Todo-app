@@ -46,6 +46,11 @@ export async function PUT(
       if (!id) {
         return NextResponse.json({ error: 'Missing user id' }, { status: 400 });
       }
+
+      await prisma.todo.deleteMany({
+        where: { userId: id },
+      })
+
       await prisma.user.delete({
         where: { id: id },
       });

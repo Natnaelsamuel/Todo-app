@@ -139,7 +139,7 @@ export default function SignInPage() {
                 </svg>
                 Google
               </Button>
-              <Button
+              {/* <Button
                 variant="outline"
                 type="button"
                 onClick={() => signIn("github")}
@@ -152,7 +152,7 @@ export default function SignInPage() {
                   />
                 </svg>
                 GitHub
-              </Button>
+              </Button> */}
             </div>
 
             <div className="text-center text-sm text-gray-600 dark:text-gray-400 mt-4">

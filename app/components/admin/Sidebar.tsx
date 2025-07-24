@@ -90,7 +90,7 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 
 export function AdminSidebar() {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true);
   const pathname = usePathname();
 
   return (
@@ -115,14 +115,14 @@ export function AdminSidebar() {
         </div>
 
         <nav className="flex-1 px-2 py-4 space-y-1">
-          <SidebarLink
+          {/* <SidebarLink
             href="/admin"
             icon={<LayoutDashboard size={18} />}
             isCollapsed={isCollapsed}
             isActive={pathname === "/admin"}
           >
             Dashboard
-          </SidebarLink>
+          </SidebarLink> */}
           <SidebarLink
             href="/admin/users"
             icon={<Users size={18} />}
@@ -139,14 +139,14 @@ export function AdminSidebar() {
           >
             Todos
           </SidebarLink>
-          <SidebarLink
+          {/* <SidebarLink
             href="/admin/settings"
             icon={<Settings size={18} />}
             isCollapsed={isCollapsed}
             isActive={pathname?.startsWith("/admin/settings")}
           >
             Settings
-          </SidebarLink>
+          </SidebarLink> */}
         </nav>
 
         <div className="px-2 py-2">
