@@ -1,7 +1,6 @@
 "use client";
-import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
 import AdminTodoList from "@/app/components/admin/AdminTodoList";
+import { useEffect, useState } from "react";
 
 const page = () => {
   const [todos, setTodos] = useState([]);

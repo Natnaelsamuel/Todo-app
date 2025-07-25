@@ -97,7 +97,7 @@ export default function SignInPage() {
               )}
             />
 
-            <Button type="submit" className="w-full mt-2">
+            <Button type="submit" className="w-full mt-2" variant='main'>
               Sign In
             </Button>
 

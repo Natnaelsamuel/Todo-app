@@ -174,7 +174,7 @@ export default function UpdateTodoModal({
               <Button variant="outline" type="button" onClick={onClose}>
                 Cancel
               </Button>
-              <Button type="submit">Update Todo</Button>
+              <Button type="submit" variant='main'>Update Todo</Button>
             </div>
           </form>
         </Form>

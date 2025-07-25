@@ -173,7 +173,7 @@ const UsersList = ({
       <div className="overflow-x-auto shadow-xl rounded-sm pb-4 dark:shadow-white dark:shadow-md">
         <Table className="table-auto border border-collapse w-full">
           <TableHeader>
-            <TableRow className="bg-gray-100 dark:bg-black">
+            <TableRow className="bg-emerald-100 dark:bg-black hover:bg-emerald-200">
               <TableHead className="px-2 py-2 font-bold text-gray-700 dark:text-gray-400">
                 <div
                   className="flex items-center cursor-pointer hover:text-gray-900 dark:hover:text-gray-200"

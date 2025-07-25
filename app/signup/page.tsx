@@ -1,23 +1,21 @@
 "use client";
 
-import { useForm } from "react-hook-form";
-import * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "react-hot-toast";
-import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 import {
   Form,
+  FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormControl,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { prisma } from "@/prisma/client"; // Ensure you have the correct import for your Prisma client
-import bcrypt from "bcryptjs";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
+import * as z from "zod";
 
 // Schema for form validation
 const formSchema = z
@@ -144,7 +142,7 @@ export default function SignUpPage() {
               )}
             />
 
-            <Button type="submit" className="w-full mt-2">
+            <Button type="submit" className="w-full mt-2" variant='main'>
               Create Account
             </Button>
 

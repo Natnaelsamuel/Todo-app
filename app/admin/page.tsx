@@ -304,7 +304,6 @@ export default function DashboardPage() {
 
   return (
     <div className="p-6 space-y-6 ml-10">
-      {/* Header */}
       <div className="space-y-2">
         <h1 className="text-3xl font-bold tracking-tight">Dashboard Overview</h1>
         <p className="text-muted-foreground">
@@ -312,9 +311,7 @@ export default function DashboardPage() {
         </p>
       </div>
 
-      {/* Stats Cards */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        {/* Total Users Card */}
         <Card className="hover:shadow-md transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">Total Users</CardTitle>
@@ -331,7 +328,6 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        {/* Completed Todos Card */}
         <Card className="hover:shadow-md transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">Completed</CardTitle>
@@ -347,7 +343,6 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        {/* In Progress Card */}
         <Card className="hover:shadow-md transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">In Progress</CardTitle>
@@ -363,7 +358,6 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        {/* Pending Card */}
         <Card className="hover:shadow-md transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">Pending</CardTitle>
@@ -380,7 +374,6 @@ export default function DashboardPage() {
         </Card>
       </div>
 
-      {/* Main Graph Section */}
       <div className="space-y-4">
         <h2 className="text-xl font-semibold">Todo Analytics</h2>
         <Card className="w-full p-6 hover:shadow-md transition-shadow">

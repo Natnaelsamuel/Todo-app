@@ -60,7 +60,7 @@ export default function Home() {
         {/* <button onClick={() => setShowModal(true)} className="btn btn-primary">
           Create Todo
         </button> */}
-        <Button onClick={() => setShowModal(true)} className="cursor-pointer">
+        <Button onClick={() => setShowModal(true)} variant='main'>
           Create Todo
         </Button>
       </div>

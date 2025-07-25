@@ -30,7 +30,7 @@ const NavBar = () => {
       </ul>
       <div className="flex items-center gap-1">
         <form action="api/auth/signout">
-          <Button variant="outline" type="submit">
+          <Button variant="light" type="submit">
             <LogOut size={1} />
           </Button>
         </form>

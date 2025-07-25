@@ -145,7 +145,7 @@ export default function CreateTodoModal({
               <Button type="button" variant="outline" onClick={onClose}>
                 Cancel
               </Button>
-              <Button type="submit">Add Todo</Button>
+              <Button type="submit" variant='main'>Add Todo</Button>
             </div>
           </form>
         </Form>

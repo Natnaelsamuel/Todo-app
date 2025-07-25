@@ -743,7 +743,7 @@ export default function TodoList({
       <div className="overflow-x-auto shadow-xl rounded-sm pb-4 dark:shadow-white dark:shadow-md">
         <Table className="table-auto border border-collapse w-full">
           <TableHeader>
-            <TableRow className="bg-gray-100 dark:bg-black">
+            <TableRow className="bg-emerald-100 dark:bg-black">
               <TableHead className="px-2 py-2 font-bold text-gray-700 dark:text-gray-400">
                 <div
                   className="flex items-center cursor-pointer hover:text-gray-900 dark:hover:text-gray-200"
@@ -809,7 +809,7 @@ export default function TodoList({
               {groupTodos.map((todo) => (
                 <TableRow
                   key={todo.id}
-                  className="hover:bg-gray-100 dark:hover:bg-gray-800"
+                  className="hover:bg-emerald-50 dark:hover:bg-gray-800"
                 >
                   <TableCell className="px-2 py-2">{todo.title}</TableCell>
                   <TableCell className="px-2 py-2">
