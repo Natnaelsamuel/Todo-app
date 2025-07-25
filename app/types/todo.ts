@@ -6,4 +6,4 @@ export interface Todo {
   userId: string;
 }
 
-export const statusOptions = ["pending", "in-progress", "completed"] as const;
+export const statusOptions = ["pending", "in_progress", "completed"] as const;

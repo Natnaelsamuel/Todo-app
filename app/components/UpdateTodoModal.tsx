@@ -37,7 +37,7 @@ import {
 
 const formSchema = z.object({
   title: z.string().min(1, "Title is required"),
-  status: z.enum(["pending", "in-progress", "completed"]),
+  status: z.enum(["pending", "in_progress", "completed"]),
   deadline: z.date().refine((date) => date > new Date(), {
     message: "Deadline must be in the future",
   }),
@@ -45,7 +45,7 @@ const formSchema = z.object({
 
 type FormData = z.infer<typeof formSchema>;
 
-const statusOptions = ["pending", "in-progress", "completed"];
+const statusOptions = ["pending", "in_progress", "completed"];
 
 export default function UpdateTodoModal({
   onClose,
@@ -60,7 +60,7 @@ export default function UpdateTodoModal({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: todo.title,
-      status: todo.status as "pending" | "in-progress" | "completed",
+      status: todo.status as "pending" | "in_progress" | "completed",
       deadline: new Date(todo.deadline),
     },
   });

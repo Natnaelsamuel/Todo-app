@@ -115,14 +115,14 @@ export function AdminSidebar() {
         </div>
 
         <nav className="flex-1 px-2 py-4 space-y-1">
-          {/* <SidebarLink
+          <SidebarLink
             href="/admin"
             icon={<LayoutDashboard size={18} />}
             isCollapsed={isCollapsed}
             isActive={pathname === "/admin"}
           >
             Dashboard
-          </SidebarLink> */}
+          </SidebarLink>
           <SidebarLink
             href="/admin/users"
             icon={<Users size={18} />}
@@ -191,8 +191,8 @@ function SidebarLink({
       className={cn(
         "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all",
         isActive
-          ? "bg-primary/10 text-primary"
-          : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
+          ? "bg-emerald-100 text-primary"
+          : "text-muted-foreground hover:bg-emerald-50 hover:text-accent-foreground",
         isCollapsed ? "justify-center" : "justify-start"
       )}
       title={isCollapsed ? String(children) : undefined}

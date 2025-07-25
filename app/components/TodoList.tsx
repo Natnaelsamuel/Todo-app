@@ -660,7 +660,7 @@ export default function TodoList({
     switch (status) {
       case "pending":
         return "bg-stone-400 dark:bg-stone-600";
-      case "in-progress":
+      case "in_progress":
         return "bg-blue-400 dark:bg-blue-600";
       case "completed":
         return "bg-green-400 dark:bg-green-600";

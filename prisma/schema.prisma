@@ -16,7 +16,7 @@ datasource db {
 model Todo {
   id        String   @id @default(cuid())
   title     String
-  status    String   @default("pending")
+  status    TodoStatus @default(pending)
   deadline  DateTime
   completed Boolean  @default(false)
   createdAt DateTime @default(now())
@@ -25,6 +25,15 @@ model Todo {
   user      User     @relation(fields: [userId], references: [id])
 
   @@index([userId])
+  @@index([status])
+  @@index([completed])
+  @@index([deadline])
+}
+
+enum TodoStatus {
+  pending
+  in_progress
+  completed
 }
 
 model Account {
@@ -63,6 +72,7 @@ model User {
   email         String?   @unique
   password      String?
   role          Role      @default(user)
+  createdAt DateTime @default(now())
   emailVerified DateTime? @map("email_verified")
   image         String?
   accounts      Account[]
