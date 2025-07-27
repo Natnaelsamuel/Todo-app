@@ -121,7 +121,7 @@
 //   );
 // }
 
-"use client";
+'use client';
 
 import {
   BarChart,
@@ -139,7 +139,7 @@ import {
 } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-const COLORS = ["#10B981", "#3B82F6 ", "#F59E0B"];
+const COLORS = ["#10B981", "#3B82F6", "#F59E0B"]; // Green, Blue, Orange
 
 interface BarData {
   name: string;
@@ -182,7 +182,7 @@ const renderCustomizedLabel = ({
       dominantBaseline="central"
       className="text-xs font-medium"
     >
-      {`${name}: ${(percent * 100).toFixed(0)}%`}
+      {`${(percent * 100).toFixed(0)}%`}
     </text>
   );
 };
@@ -198,7 +198,7 @@ export function TodoChart({ barData, pieData }: TodoChartProps) {
             <BarChart
               data={barData}
               margin={{
-                top: 5,
+                top: 20,
                 right: 30,
                 left: 20,
                 bottom: 5,
@@ -225,19 +225,19 @@ export function TodoChart({ barData, pieData }: TodoChartProps) {
               <Legend />
               <Bar 
                 dataKey="completed" 
-                fill="#10B981" 
+                fill={COLORS[0]} 
                 name="Completed" 
                 radius={[4, 4, 0, 0]}
               />
               <Bar 
                 dataKey="in_progress" 
-                fill="#F59E0B" 
+                fill={COLORS[1]} 
                 name="In Progress" 
                 radius={[4, 4, 0, 0]}
               />
               <Bar 
                 dataKey="pending" 
-                fill="#EF4444" 
+                fill={COLORS[2]} 
                 name="Pending" 
                 radius={[4, 4, 0, 0]}
               />
@@ -282,9 +282,6 @@ export function TodoChart({ barData, pieData }: TodoChartProps) {
                 layout="vertical"
                 verticalAlign="middle"
                 align="right"
-                wrapperStyle={{
-                  paddingLeft: '24px'
-                }}
               />
             </PieChart>
           </ResponsiveContainer>

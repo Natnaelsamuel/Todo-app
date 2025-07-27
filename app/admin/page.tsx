@@ -210,12 +210,18 @@
 //   );
 // }
 
-"use client";
+'use client';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { TodoChart } from "../components/admin/TodoChart";
 import { useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
-import { TrendingUp, Users, CheckCircle, Clock, AlertCircle, Loader2 } from "lucide-react";
+import { TrendingUp, Users, CheckCircle, Clock, AlertCircle, Loader2, Calendar as CalendarIcon } from "lucide-react";
+import { DateRange } from "react-day-picker";
+import { format, subDays } from "date-fns";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 
 interface DashboardStats {
   users: {
@@ -246,26 +252,34 @@ export default function DashboardPage() {
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [dateRange, setDateRange] = useState<DateRange | undefined>({
+    from: subDays(new Date(), 30),
+    to: new Date(),
+  });
+
+  const fetchStats = async () => {
+    try {
+      setLoading(true);
+      const params = new URLSearchParams();
+      if (dateRange?.from) params.append('startDate', format(dateRange.from, 'yyyy-MM-dd'));
+      if (dateRange?.to) params.append('endDate', format(dateRange.to, 'yyyy-MM-dd'));
+
+      const response = await fetch(`/api/admin/stats?${params.toString()}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch stats');
+      }
+      const data = await response.json();
+      setStats(data);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Unknown error occurred');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        setLoading(true);
-        const response = await fetch('/api/admin/stats');
-        if (!response.ok) {
-          throw new Error('Failed to fetch stats');
-        }
-        const data = await response.json();
-        setStats(data);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Unknown error occurred');
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchStats();
-  }, []);
+  }, [dateRange]);
 
   if (loading) {
     return (
@@ -304,11 +318,52 @@ export default function DashboardPage() {
 
   return (
     <div className="p-6 space-y-6 ml-10">
-      <div className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">Dashboard Overview</h1>
-        <p className="text-muted-foreground">
-          Insights and analytics for your todo application
-        </p>
+      <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
+        <div className="space-y-2">
+          <h1 className="text-3xl font-bold tracking-tight">Dashboard Overview</h1>
+          <p className="text-muted-foreground">
+            Insights and analytics for your todo application
+          </p>
+        </div>
+        
+        <div className="w-full md:w-auto">
+          <div className="grid gap-2">
+            <Label htmlFor="date-range">Filter by date</Label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  id="date-range"
+                  variant={"outline"}
+                  className="w-full md:w-[240px] justify-start text-left font-normal"
+                >
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  {dateRange?.from ? (
+                    dateRange.to ? (
+                      <>
+                        {format(dateRange.from, "MMM dd")} -{" "}
+                        {format(dateRange.to, "MMM dd")}
+                      </>
+                    ) : (
+                      format(dateRange.from, "MMM dd")
+                    )
+                  ) : (
+                    <span>Pick a date range</span>
+                  )}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  initialFocus
+                  mode="range"
+                  defaultMonth={dateRange?.from}
+                  selected={dateRange}
+                  onSelect={setDateRange}
+                  numberOfMonths={1}
+                />
+              </PopoverContent>
+            </Popover>
+          </div>
+        </div>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
