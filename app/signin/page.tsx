@@ -17,6 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { COLOR_THEME } from "@/lib/theme";
 
 const formSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -97,7 +98,7 @@ export default function SignInPage() {
               )}
             />
 
-            <Button type="submit" className="w-full mt-2" variant='main'>
+            <Button type="submit" className={`w-full mt-2 ${COLOR_THEME.primary[600]} hover:${COLOR_THEME.primary[700]}`}>
               Sign In
             </Button>
 

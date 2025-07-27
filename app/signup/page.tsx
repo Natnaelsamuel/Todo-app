@@ -10,6 +10,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { COLOR_THEME } from "@/lib/theme";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -142,7 +143,7 @@ export default function SignUpPage() {
               )}
             />
 
-            <Button type="submit" className="w-full mt-2" variant='main'>
+            <Button type="submit" className={`w-full mt-2 ${COLOR_THEME.primary[600]} hover:${COLOR_THEME.primary[700]}`}>
               Create Account
             </Button>
 
