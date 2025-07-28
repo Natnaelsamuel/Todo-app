@@ -1,21 +1,15 @@
-// export default async function AdminPage() {
-//   return (
-//     // <div>
-//     //   {/* <main
-//     //     className={cn(
-//     //       "min-h-screen pt-4 transition-[margin] duration-300 ml-16"
-//     //     )}
-//     //   > */}
-//     //   {/* </main> */}
-//     // </div>
-    
-//   );
-// }
-
-// "use client";
-// import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+// 'use client';
+// import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 // import { TodoChart } from "../components/admin/TodoChart";
 // import { useEffect, useState } from "react";
+// import { Skeleton } from "@/components/ui/skeleton";
+// import { TrendingUp, Users, CheckCircle, Clock, AlertCircle, Loader2, Calendar as CalendarIcon } from "lucide-react";
+// import { DateRange } from "react-day-picker";
+// import { format, subDays } from "date-fns";
+// import { Calendar } from "@/components/ui/calendar";
+// import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+// import { Button } from "@/components/ui/button";
+// import { Label } from "@/components/ui/label";
 
 // interface DashboardStats {
 //   users: {
@@ -46,156 +40,186 @@
 //   });
 //   const [loading, setLoading] = useState(true);
 //   const [error, setError] = useState<string | null>(null);
+//   const [dateRange, setDateRange] = useState<DateRange | undefined>({
+//     from: subDays(new Date(), 30),
+//     to: new Date(),
+//   });
+
+//   const fetchStats = async () => {
+//     try {
+//       setLoading(true);
+//       const params = new URLSearchParams();
+//       if (dateRange?.from) params.append('startDate', format(dateRange.from, 'yyyy-MM-dd'));
+//       if (dateRange?.to) params.append('endDate', format(dateRange.to, 'yyyy-MM-dd'));
+
+//       const response = await fetch(`/api/admin/stats?${params.toString()}`);
+//       if (!response.ok) {
+//         throw new Error('Failed to fetch stats');
+//       }
+//       const data = await response.json();
+//       setStats(data);
+//     } catch (err) {
+//       setError(err instanceof Error ? err.message : 'Unknown error occurred');
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
 
 //   useEffect(() => {
-//     const fetchStats = async () => {
-//       try {
-//         setLoading(true);
-//         const response = await fetch('/api/admin/stats');
-//         if (!response.ok) {
-//           throw new Error('Failed to fetch stats');
-//         }
-//         const data = await response.json();
-//         setStats(data);
-//       } catch (err) {
-//         setError(err instanceof Error ? err.message : 'Unknown error occurred');
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-
 //     fetchStats();
-//   }, []);
+//   }, [dateRange]);
 
 //   if (loading) {
-//     return <div className="flex justify-center items-center h-64">Loading dashboard...</div>;
+//     return (
+//       <div className="p-8 space-y-8 ml-10">
+//         <div className="space-y-2">
+//           <Skeleton className="h-8 w-[200px]" />
+//           <Skeleton className="h-4 w-[300px]" />
+//         </div>
+        
+//         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+//           {[...Array(4)].map((_, i) => (
+//             <Skeleton key={i} className="h-[120px] rounded-xl" />
+//           ))}
+//         </div>
+        
+//         <Skeleton className="h-[400px] w-full rounded-xl" />
+//       </div>
+//     );
 //   }
 
 //   if (error) {
-//     return <div className="flex justify-center items-center h-64 text-red-500">Error: {error}</div>;
+//     return (
+//       <div className="flex flex-col items-center justify-center h-[60vh] gap-4 ml-10">
+//         <AlertCircle className="h-12 w-12 text-red-500" />
+//         <h2 className="text-xl font-semibold">Error loading dashboard</h2>
+//         <p className="text-muted-foreground max-w-md text-center">{error}</p>
+//         <button 
+//           onClick={() => window.location.reload()}
+//           className="mt-4 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
+//         >
+//           Retry
+//         </button>
+//       </div>
+//     );
 //   }
 
 //   return (
-//     <div className="flex flex-col ml-10">
-//       <div className="mb-8">
-//         <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
-//         <p className="text-muted-foreground">
-//           Overview of your todo application
-//         </p>
+//     <div className="p-6 space-y-6 ml-10">
+//       <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
+//         <div className="space-y-2">
+//           <h1 className="text-3xl font-bold tracking-tight">Dashboard Overview</h1>
+//           <p className="text-muted-foreground">
+//             Insights and analytics for your todo application
+//           </p>
+//         </div>
+        
+//         <div className="w-full md:w-auto">
+//           <div className="grid gap-2">
+//             <Label htmlFor="date-range">Filter by date</Label>
+//             <Popover>
+//               <PopoverTrigger asChild>
+//                 <Button
+//                   id="date-range"
+//                   variant={"outline"}
+//                   className="w-full md:w-[240px] justify-start text-left font-normal"
+//                 >
+//                   <CalendarIcon className="mr-2 h-4 w-4" />
+//                   {dateRange?.from ? (
+//                     dateRange.to ? (
+//                       <>
+//                         {format(dateRange.from, "MMM dd")} -{" "}
+//                         {format(dateRange.to, "MMM dd")}
+//                       </>
+//                     ) : (
+//                       format(dateRange.from, "MMM dd")
+//                     )
+//                   ) : (
+//                     <span>Pick a date range</span>
+//                   )}
+//                 </Button>
+//               </PopoverTrigger>
+//               <PopoverContent className="w-auto p-0" align="start">
+//                 <Calendar
+//                   initialFocus
+//                   mode="range"
+//                   defaultMonth={dateRange?.from}
+//                   selected={dateRange}
+//                   onSelect={setDateRange}
+//                   numberOfMonths={1}
+//                 />
+//               </PopoverContent>
+//             </Popover>
+//           </div>
+//         </div>
 //       </div>
 
-//       {/* Stats Cards */}
-//       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
-//         {/* Total Users Card */}
-//         <Card>
-//           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-//             <CardTitle className="text-sm font-medium">Total Users</CardTitle>
-//             <svg
-//               xmlns="http://www.w3.org/2000/svg"
-//               viewBox="0 0 24 24"
-//               fill="none"
-//               stroke="currentColor"
-//               strokeLinecap="round"
-//               strokeLinejoin="round"
-//               strokeWidth="2"
-//               className="h-4 w-4 text-muted-foreground"
-//             >
-//               <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-//               <circle cx="9" cy="7" r="4" />
-//               <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
-//             </svg>
+//       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+//         <Card className="hover:shadow-md transition-shadow">
+//           <CardHeader className="flex flex-row items-center justify-between pb-2">
+//             <CardTitle className="text-sm font-medium text-muted-foreground">Total Users</CardTitle>
+//             <div className="bg-primary/10 p-2 rounded-lg">
+//               <Users className="h-4 w-4 text-primary" />
+//             </div>
 //           </CardHeader>
 //           <CardContent>
 //             <div className="text-2xl font-bold">{stats.users.totalUsers}</div>
-//             <p className="text-xs text-muted-foreground">
-//               +{stats.users.growthPercentage}% from last week
-//             </p>
+//             <div className="flex items-center text-xs text-muted-foreground mt-1">
+//               <TrendingUp className="h-3 w-3 text-green-500 mr-1" />
+//               <span>+{stats.users.growthPercentage}% from last week</span>
+//             </div>
 //           </CardContent>
 //         </Card>
 
-//         {/* Completed Todos Card */}
-//         <Card>
-//           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-//             <CardTitle className="text-sm font-medium">Completed</CardTitle>
-//             <svg
-//               xmlns="http://www.w3.org/2000/svg"
-//               viewBox="0 0 24 24"
-//               fill="none"
-//               stroke="currentColor"
-//               strokeLinecap="round"
-//               strokeLinejoin="round"
-//               strokeWidth="2"
-//               className="h-4 w-4 text-muted-foreground"
-//             >
-//               <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
-//             </svg>
+//         <Card className="hover:shadow-md transition-shadow">
+//           <CardHeader className="flex flex-row items-center justify-between pb-2">
+//             <CardTitle className="text-sm font-medium text-muted-foreground">Completed</CardTitle>
+//             <div className="bg-green-500/10 p-2 rounded-lg">
+//               <CheckCircle className="h-4 w-4 text-green-500" />
+//             </div>
 //           </CardHeader>
 //           <CardContent>
 //             <div className="text-2xl font-bold">{stats.todos.completed}</div>
-//             <p className="text-xs text-muted-foreground">
+//             <div className="text-xs text-muted-foreground mt-1">
 //               {stats.todos.completionPercentage}% completion rate
-//             </p>
+//             </div>
 //           </CardContent>
 //         </Card>
 
-//         {/* In Progress Card */}
-//         <Card>
-//           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-//             <CardTitle className="text-sm font-medium">In Progress</CardTitle>
-//             <svg
-//               xmlns="http://www.w3.org/2000/svg"
-//               viewBox="0 0 24 24"
-//               fill="none"
-//               stroke="currentColor"
-//               strokeLinecap="round"
-//               strokeLinejoin="round"
-//               strokeWidth="2"
-//               className="h-4 w-4 text-muted-foreground"
-//             >
-//               <circle cx="12" cy="12" r="10" />
-//               <path d="M12 6v6l4 2" />
-//             </svg>
+//         <Card className="hover:shadow-md transition-shadow">
+//           <CardHeader className="flex flex-row items-center justify-between pb-2">
+//             <CardTitle className="text-sm font-medium text-muted-foreground">In Progress</CardTitle>
+//             <div className="bg-yellow-500/10 p-2 rounded-lg">
+//               <Loader2 className="h-4 w-4 text-yellow-500 animate-spin" />
+//             </div>
 //           </CardHeader>
 //           <CardContent>
 //             <div className="text-2xl font-bold">{stats.todos.in_progress}</div>
-//             <p className="text-xs text-muted-foreground">
+//             <div className="text-xs text-muted-foreground mt-1">
 //               {Math.round((stats.todos.in_progress / stats.todos.totalTodos) * 100)}% of total
-//             </p>
+//             </div>
 //           </CardContent>
 //         </Card>
 
-//         {/* Pending Card */}
-//         <Card>
-//           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-//             <CardTitle className="text-sm font-medium">Pending</CardTitle>
-//             <svg
-//               xmlns="http://www.w3.org/2000/svg"
-//               viewBox="0 0 24 24"
-//               fill="none"
-//               stroke="currentColor"
-//               strokeLinecap="round"
-//               strokeLinejoin="round"
-//               strokeWidth="2"
-//               className="h-4 w-4 text-muted-foreground"
-//             >
-//               <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
-//             </svg>
+//         <Card className="hover:shadow-md transition-shadow">
+//           <CardHeader className="flex flex-row items-center justify-between pb-2">
+//             <CardTitle className="text-sm font-medium text-muted-foreground">Pending</CardTitle>
+//             <div className="bg-orange-500/10 p-2 rounded-lg">
+//               <Clock className="h-4 w-4 text-orange-500" />
+//             </div>
 //           </CardHeader>
 //           <CardContent>
 //             <div className="text-2xl font-bold">{stats.todos.pending}</div>
-//             <p className="text-xs text-muted-foreground">
+//             <div className="text-xs text-muted-foreground mt-1">
 //               {Math.round((stats.todos.pending / stats.todos.totalTodos) * 100)}% of total
-//             </p>
+//             </div>
 //           </CardContent>
 //         </Card>
 //       </div>
 
-//       {/* Main Graph Section */}
-//       <Card className="w-full">
-//         <CardHeader>
-//           <CardTitle>Todo Status Overview</CardTitle>
-//         </CardHeader>
-//         <CardContent>
+//       <div className="space-y-4">
+//         <h2 className="text-xl font-semibold">Todo Analytics</h2>
+//         <Card className="w-full p-6 hover:shadow-md transition-shadow">
 //           <TodoChart 
 //             barData={stats.trends} 
 //             pieData={[
@@ -204,8 +228,8 @@
 //               { name: "Pending", value: stats.todos.pending }
 //             ]} 
 //           />
-//         </CardContent>
-//       </Card>
+//         </Card>
+//       </div>
 //     </div>
 //   );
 // }
@@ -222,6 +246,8 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { COLOR_THEME } from "@/lib/theme";
+import { cn } from "@/lib/utils";
 
 interface DashboardStats {
   users: {
@@ -284,18 +310,37 @@ export default function DashboardPage() {
   if (loading) {
     return (
       <div className="p-8 space-y-8 ml-10">
-        <div className="space-y-2">
-          <Skeleton className="h-8 w-[200px]" />
-          <Skeleton className="h-4 w-[300px]" />
+        <div className="flex justify-between items-start">
+          <div className="space-y-2">
+            <Skeleton className="h-8 w-[200px]" />
+            <Skeleton className="h-4 w-[300px]" />
+          </div>
+          <Skeleton className="h-10 w-[240px]" />
         </div>
         
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {[...Array(4)].map((_, i) => (
-            <Skeleton key={i} className="h-[120px] rounded-xl" />
+            <Card key={i} className="h-[120px]">
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <Skeleton className="h-4 w-[100px]" />
+                <Skeleton className="h-8 w-8 rounded-lg" />
+              </CardHeader>
+              <CardContent>
+                <Skeleton className="h-6 w-[80px] mb-2" />
+                <Skeleton className="h-3 w-[120px]" />
+              </CardContent>
+            </Card>
           ))}
         </div>
         
-        <Skeleton className="h-[400px] w-full rounded-xl" />
+        <Card className="h-[400px]">
+          <CardHeader>
+            <Skeleton className="h-5 w-[150px]" />
+          </CardHeader>
+          <CardContent>
+            <Skeleton className="h-full w-full" />
+          </CardContent>
+        </Card>
       </div>
     );
   }
@@ -303,24 +348,27 @@ export default function DashboardPage() {
   if (error) {
     return (
       <div className="flex flex-col items-center justify-center h-[60vh] gap-4 ml-10">
-        <AlertCircle className="h-12 w-12 text-red-500" />
+        <div className="bg-red-100 dark:bg-red-900/30 p-4 rounded-full">
+          <AlertCircle className="h-12 w-12 text-red-500 dark:text-red-400" />
+        </div>
         <h2 className="text-xl font-semibold">Error loading dashboard</h2>
         <p className="text-muted-foreground max-w-md text-center">{error}</p>
-        <button 
-          onClick={() => window.location.reload()}
-          className="mt-4 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
+        <Button 
+          onClick={() => fetchStats()}
+          className="mt-4"
+          variant="outline"
         >
           Retry
-        </button>
+        </Button>
       </div>
     );
   }
 
   return (
-    <div className="p-6 space-y-6 ml-10">
-      <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
-        <div className="space-y-2">
-          <h1 className="text-3xl font-bold tracking-tight">Dashboard Overview</h1>
+    <div className="p-6 space-y-6 ml-10 ">
+      <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+        <div className="space-y-1">
+          <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Dashboard Overview</h1>
           <p className="text-muted-foreground">
             Insights and analytics for your todo application
           </p>
@@ -328,13 +376,16 @@ export default function DashboardPage() {
         
         <div className="w-full md:w-auto">
           <div className="grid gap-2">
-            <Label htmlFor="date-range">Filter by date</Label>
+            <Label htmlFor="date-range" className="text-sm">Date Range</Label>
             <Popover>
               <PopoverTrigger asChild>
                 <Button
                   id="date-range"
                   variant={"outline"}
-                  className="w-full md:w-[240px] justify-start text-left font-normal"
+                  className={cn(
+                    "w-full md:w-[240px] justify-start text-left font-normal",
+                    !dateRange && "text-muted-foreground"
+                  )}
                 >
                   <CalendarIcon className="mr-2 h-4 w-4" />
                   {dateRange?.from ? (
@@ -351,7 +402,7 @@ export default function DashboardPage() {
                   )}
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
+              <PopoverContent className="w-auto p-0" align="end">
                 <Calendar
                   initialFocus
                   mode="range"
@@ -367,27 +418,31 @@ export default function DashboardPage() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card className="hover:shadow-md transition-shadow">
+        <Card className="hover:shadow-md transition-shadow border-border">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">Total Users</CardTitle>
-            <div className="bg-primary/10 p-2 rounded-lg">
-              <Users className="h-4 w-4 text-primary" />
+            <div className="bg-purple-100 dark:bg-purple-900/30 p-2 rounded-lg">
+              <Users className="h-4 w-4 text-purple-600 dark:text-purple-400" />
             </div>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.users.totalUsers}</div>
             <div className="flex items-center text-xs text-muted-foreground mt-1">
-              <TrendingUp className="h-3 w-3 text-green-500 mr-1" />
-              <span>+{stats.users.growthPercentage}% from last week</span>
+              {stats.users.growthPercentage > "0" ? (
+                <TrendingUp className="h-3 w-3 text-green-500 mr-1" />
+              ) : (
+                <TrendingUp className="h-3 w-3 text-red-500 mr-1 transform rotate-180" />
+              )}
+              <span>{stats.users.growthPercentage}% from last week</span>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="hover:shadow-md transition-shadow">
+        <Card className="hover:shadow-md transition-shadow border-border">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">Completed</CardTitle>
-            <div className="bg-green-500/10 p-2 rounded-lg">
-              <CheckCircle className="h-4 w-4 text-green-500" />
+            <div className="bg-green-100 dark:bg-green-900/30 p-2 rounded-lg">
+              <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400" />
             </div>
           </CardHeader>
           <CardContent>
@@ -398,11 +453,11 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card className="hover:shadow-md transition-shadow">
+        <Card className="hover:shadow-md transition-shadow border-border">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">In Progress</CardTitle>
-            <div className="bg-yellow-500/10 p-2 rounded-lg">
-              <Loader2 className="h-4 w-4 text-yellow-500 animate-spin" />
+            <div className="bg-yellow-100 dark:bg-yellow-900/30 p-2 rounded-lg">
+              <Loader2 className="h-4 w-4 text-yellow-600 dark:text-yellow-400 animate-spin" />
             </div>
           </CardHeader>
           <CardContent>
@@ -413,11 +468,11 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card className="hover:shadow-md transition-shadow">
+        <Card className="hover:shadow-md transition-shadow border-border">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">Pending</CardTitle>
-            <div className="bg-orange-500/10 p-2 rounded-lg">
-              <Clock className="h-4 w-4 text-orange-500" />
+            <div className="bg-orange-100 dark:bg-orange-900/30 p-2 rounded-lg">
+              <Clock className="h-4 w-4 text-orange-600 dark:text-orange-400" />
             </div>
           </CardHeader>
           <CardContent>
@@ -430,8 +485,8 @@ export default function DashboardPage() {
       </div>
 
       <div className="space-y-4">
-        <h2 className="text-xl font-semibold">Todo Analytics</h2>
-        <Card className="w-full p-6 hover:shadow-md transition-shadow">
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Todo Analytics</h2>
+        <Card className="w-full p-6 hover:shadow-md transition-shadow border-border">
           <TodoChart 
             barData={stats.trends} 
             pieData={[

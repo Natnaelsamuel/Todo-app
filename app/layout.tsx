@@ -43,7 +43,7 @@ export default function RootLayout({
             >
               <NavBar />
               <Toaster />
-              <main className="p-10 flex-grow">{children}</main>
+              <main className="flex-grow">{children}</main>
               <Footer />
             </ThemeProvider>
           </Providers>
