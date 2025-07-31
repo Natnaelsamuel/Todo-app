@@ -24,14 +24,14 @@ export const authOptions: NextAuthOptions = {
                 if (!user) return null;
 
                 const passwordsMatch = await bcrypt.compare(credentials.password, user.password!);
-                // return passwordsMatch ? user : null;
+
                 if (!passwordsMatch) return null;
                 
                 return {
                     id: user.id,
                     email: user.email,
                     name: user.name,
-                    role: user.role // Make sure your User model has a 'role' field
+                    role: user.role 
                 };
             },
         }),

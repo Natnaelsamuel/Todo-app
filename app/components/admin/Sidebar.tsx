@@ -149,6 +149,7 @@ import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { COLOR_THEME } from "@/lib/theme";
+import { ModeToggle } from "../ModeToggle";
 
 export function AdminSidebar() {
   const [isCollapsed, setIsCollapsed] = useState(true);
@@ -219,6 +220,9 @@ export function AdminSidebar() {
 
         {/* Footer */}
         <div className="px-2 py-2 mt-auto">
+          <div className={cn("flex",
+            isCollapsed ? "justify-center" : "justify-start"
+          )}><ModeToggle/></div>
           <Separator className="my-2" />
           <form action="/api/auth/signout">
             <Button
