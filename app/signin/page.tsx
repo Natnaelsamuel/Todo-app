@@ -225,16 +225,24 @@ export default function SignInPage() {
       router.push("/home");
     } catch (error) {
       console.error(error);
-      toast.error("Invalid credentials. Please try again.", { position: "top-center" });
+      toast.error("Invalid credentials. Please try again.", {
+        position: "top-center",
+      });
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 to-white dark:from-gray-900 dark:to-gray-800 p-4">
-      <div className={`bg-white dark:bg-gray-900 p-8 rounded-xl shadow-lg w-full max-w-md border ${COLOR_THEME.primary.border}`}>
+      <div
+        className={`bg-white dark:bg-gray-900 p-8 rounded-xl shadow-lg w-full max-w-md border ${COLOR_THEME.primary.border}`}
+      >
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Welcome Back</h1>
-          <p className="text-gray-600 dark:text-gray-400">Sign in to your account</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+            Welcome Back
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400">
+            Sign in to your account
+          </p>
         </div>
 
         <Form {...form}>
@@ -244,7 +252,9 @@ export default function SignInPage() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-gray-700 dark:text-gray-300">Email</FormLabel>
+                  <FormLabel className="text-gray-700 dark:text-gray-300">
+                    Email
+                  </FormLabel>
                   <FormControl>
                     <Input
                       placeholder="your@email.com"
@@ -264,7 +274,9 @@ export default function SignInPage() {
               render={({ field }) => (
                 <FormItem>
                   <div className="flex justify-between items-center">
-                    <FormLabel className="text-gray-700 dark:text-gray-300">Password</FormLabel>
+                    <FormLabel className="text-gray-700 dark:text-gray-300">
+                      Password
+                    </FormLabel>
                     <Link
                       href="/forgot-password"
                       className="text-sm text-purple-600 hover:text-purple-500 dark:text-purple-400 dark:hover:text-purple-300"
@@ -333,7 +345,7 @@ export default function SignInPage() {
             </div> */}
 
             <div className="text-center text-sm text-gray-600 dark:text-gray-400">
-              Don't have an account?{" "}
+              Don&apos;t have an account?{" "}
               <Link
                 href="/signup"
                 className="font-medium text-purple-600 hover:text-purple-500 dark:text-purple-400 dark:hover:text-purple-300"

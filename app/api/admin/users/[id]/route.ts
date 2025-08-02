@@ -4,7 +4,7 @@ import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
 interface RouteParams {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 export async function PUT(
@@ -17,12 +17,13 @@ export async function PUT(
             }
         
         const { role } = await request.json();
+        const { id } = await params;
           
-            if (!params.id) {
+            if (!id) {
               return NextResponse.json({ error: 'Missing user id' }, { status: 400 });
             }
         const updatedUser = await prisma.user.update({
-            where: { id: params.id },
+            where: { id: id },
             data: { role },
         });
         
@@ -42,7 +43,7 @@ export async function PUT(
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
       }
   
-      const id  = params.id;
+      const { id } = await params;
       if (!id) {
         return NextResponse.json({ error: 'Missing user id' }, { status: 400 });
       }

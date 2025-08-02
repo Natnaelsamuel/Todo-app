@@ -129,7 +129,7 @@ export default function Home() {
   };
 
   const filteredTodos = todos.filter(
-    (todo: any) =>
+    (todo: { title: string; status: string }) =>
       todo.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       todo.status.toLowerCase().includes(searchQuery.toLowerCase())
   );

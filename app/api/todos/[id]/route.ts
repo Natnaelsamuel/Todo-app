@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { authOptions } from '../../auth/authOptions';
 
 interface RouteParams {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 export async function PUT(
@@ -25,11 +25,12 @@ export async function PUT(
       selectedDate.getDate()
     ));
   
-    if (!params.id) {
+    const { id } = await params;
+    if (!id) {
       return NextResponse.json({ error: 'Missing todo id' }, { status: 400 });
     }
     const updatedTodo = await prisma.todo.update({
-      where: { id: params.id },
+      where: { id: id },
       data: { title, status, deadline: fixedDate },
     });
 
@@ -49,7 +50,7 @@ export async function DELETE(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const id  = params.id;
+    const { id } = await params;
     if (!id) {
       return NextResponse.json({ error: 'Missing todo id' }, { status: 400 });
     }

@@ -4,7 +4,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/authOptions';
 
 interface RouteParams {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 export async function DELETE(
@@ -16,7 +16,7 @@ export async function DELETE(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const id  = params.id;
+    const { id } = await params;
     if (!id) {
       return NextResponse.json({ error: 'Missing todo id' }, { status: 400 });
     }
