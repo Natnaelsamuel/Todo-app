@@ -18,7 +18,7 @@ export async function middleware(request: NextRequest) {
     // Check if user is trying to access admin routes
     if (pathname.startsWith('/admin')) {
       // Check if user has admin role in the token
-      const userRole = token.role || token.user?.role
+      const userRole = (token as any).role || (token as any).user?.role
       
       if (userRole !== 'admin') {
         return NextResponse.redirect(new URL('/home', request.url))
@@ -26,7 +26,7 @@ export async function middleware(request: NextRequest) {
     }
 
     // Redirect admin users from home to admin dashboard
-    if (pathname === '/home' && (token.role === 'admin' || token.user?.role === 'admin')) {
+    if (pathname === '/home' && ((token as any).role === 'admin' || (token as any).user?.role === 'admin')) {
       return NextResponse.redirect(new URL('/admin', request.url))
     }
   }
