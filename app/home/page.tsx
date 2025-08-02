@@ -94,11 +94,11 @@
 // }
 
 "use client";
-import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import TodoList from "../components/TodoList";
-import CreateTodoModal from "../components/CreateTodoModal";
 import { COLOR_THEME } from "@/lib/theme";
+import { useEffect, useState } from "react";
+import CreateTodoModal from "../components/CreateTodoModal";
+import TodoList from "../components/TodoList";
 
 export default function Home() {
   const [todos, setTodos] = useState([]);

@@ -184,32 +184,29 @@
 // }
 
 "use client";
-import React from "react";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import { format } from "date-fns";
-import toast from "react-hot-toast";
 import { CalendarIcon, X } from "lucide-react";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import * as z from "zod";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Form,
+  FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormControl,
   FormMessage,
 } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import {
   Popover,
-  PopoverTrigger,
   PopoverContent,
+  PopoverTrigger,
 } from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
-import { cn } from "@/lib/utils";
-import { COLOR_THEME } from "@/lib/theme";
 import {
   Select,
   SelectContent,
@@ -217,6 +214,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { COLOR_THEME } from "@/lib/theme";
+import { cn } from "@/lib/utils";
 import { Todo } from "../types/todo";
 
 const formSchema = z.object({

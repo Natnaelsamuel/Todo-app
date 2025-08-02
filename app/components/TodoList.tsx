@@ -918,13 +918,23 @@
 // }
 
 "use client";
-import { useState, useMemo, useEffect } from "react";
-import toast from "react-hot-toast";
-import UpdateTodoModal from "./UpdateTodoModal";
-import { Todo } from "../types/todo";
 import { Button } from "@/components/ui/button";
-import { useTheme } from "next-themes";
-import DeleteTodoDialog from "./DeleteTodoDialog";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Table,
   TableBody,
@@ -933,25 +943,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationPrevious,
-  PaginationNext,
-  PaginationLink,
-  PaginationEllipsis,
-} from "@/components/ui/pagination";
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from "@/components/ui/select";
 import { ArrowUpDown } from "lucide-react";
-import { COLOR_THEME } from "@/lib/theme";
-import React from "react";
+import { useTheme } from "next-themes";
+import React, { useEffect, useMemo, useState } from "react";
+import toast from "react-hot-toast";
+import { Todo } from "../types/todo";
+import DeleteTodoDialog from "./DeleteTodoDialog";
+import UpdateTodoModal from "./UpdateTodoModal";
 
 interface TodoListProps {
   todos: Todo[];

@@ -19,9 +19,8 @@
 // export default Footer;
 
 'use client';
-import { usePathname } from "next/navigation";
-import React from "react";
 import { COLOR_THEME } from "@/lib/theme";
+import { usePathname } from "next/navigation";
 
 const Footer = () => {
   const pathname = usePathname();

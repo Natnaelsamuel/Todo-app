@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/prisma/client'; // Ensure you have the correct import for your Prisma client
 import bcrypt from 'bcryptjs';
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
   try {

@@ -54,14 +54,14 @@
 // }
 
 'use client';
-import { signOut } from 'next-auth/react';
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { Card, CardHeader, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { LogOut, ArrowLeft } from 'lucide-react';
 import { COLOR_THEME } from '@/lib/theme';
+import { ArrowLeft, LogOut } from 'lucide-react';
+import { signOut } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 
 export default function SignOutPage() {

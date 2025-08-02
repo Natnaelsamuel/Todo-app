@@ -235,19 +235,18 @@
 // }
 
 'use client';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { TodoChart } from "../components/admin/TodoChart";
-import { useEffect, useState } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
-import { TrendingUp, Users, CheckCircle, Clock, AlertCircle, Loader2, Calendar as CalendarIcon } from "lucide-react";
-import { DateRange } from "react-day-picker";
-import { format, subDays } from "date-fns";
-import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { COLOR_THEME } from "@/lib/theme";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import { AlertCircle, Calendar as CalendarIcon, CheckCircle, Clock, Loader2, TrendingUp, Users } from "lucide-react";
+import { useEffect, useState } from "react";
+import { DateRange } from "react-day-picker";
+import { TodoChart } from "../components/admin/TodoChart";
 
 interface DashboardStats {
   users: {

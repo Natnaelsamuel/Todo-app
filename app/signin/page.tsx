@@ -173,24 +173,24 @@
 // }
 
 "use client";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "react-hot-toast";
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 import {
   Form,
+  FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormControl,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { COLOR_THEME } from "@/lib/theme";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { signIn } from "next-auth/react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
+import * as z from "zod";
 
 const formSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -303,7 +303,7 @@ export default function SignInPage() {
               </div>
             </div>
 
-            <div className="space-y-3">
+            {/* <div className="space-y-3">
               <Button
                 variant="outline"
                 type="button"
@@ -330,7 +330,7 @@ export default function SignInPage() {
                 </svg>
                 <span>Continue with Google</span>
               </Button>
-            </div>
+            </div> */}
 
             <div className="text-center text-sm text-gray-600 dark:text-gray-400">
               Don't have an account?{" "}

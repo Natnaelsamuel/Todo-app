@@ -101,12 +101,8 @@
 // export default UpdateTodoModal;
 
 "use client";
-import React, { useState } from "react";
-import toast from "react-hot-toast";
-import { Button } from "@/components/ui/button";
 import { User } from "@/app/types/user";
-import { X } from "lucide-react";
-import { COLOR_THEME } from "@/lib/theme";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -114,6 +110,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { COLOR_THEME } from "@/lib/theme";
+import { X } from "lucide-react";
+import React, { useState } from "react";
+import toast from "react-hot-toast";
 
 const roleOptions = ["user", "admin"];
 

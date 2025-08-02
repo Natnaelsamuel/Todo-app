@@ -134,21 +134,20 @@
 
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import {
-  LayoutDashboard,
-  Users,
-  ListTodo,
-  LogOut,
-  ChevronLeft,
-  Menu,
-} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
+import {
+  ChevronLeft,
+  LayoutDashboard,
+  ListTodo,
+  LogOut,
+  Menu,
+  Users,
+} from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { COLOR_THEME } from "@/lib/theme";
 import { ModeToggle } from "../ModeToggle";
 
 export function AdminSidebar() {

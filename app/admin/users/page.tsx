@@ -80,7 +80,7 @@
 
 "use client";
 import UsersList from "@/app/components/admin/UsersList";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const UsersPage = () => {
   const [users, setUsers] = useState([]);

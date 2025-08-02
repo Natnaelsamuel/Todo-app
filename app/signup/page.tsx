@@ -176,13 +176,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { COLOR_THEME } from "@/lib/theme";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import * as z from "zod";
-import { Eye, EyeOff } from "lucide-react";
-import { useState } from "react";
 
 const formSchema = z
   .object({

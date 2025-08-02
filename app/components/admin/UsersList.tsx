@@ -341,6 +341,7 @@
 "use client";
 import { User } from "@/app/types/user";
 import { Button } from "@/components/ui/button";
+import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import {
   Select,
   SelectContent,
@@ -360,10 +361,8 @@ import { ArrowUpDown } from "lucide-react";
 import { useTheme } from "next-themes";
 import React, { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
-import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
-import UpdateUserModal from "./UpdateUserModal";
 import DeleteTodoDialog from "../DeleteTodoDialog";
-import { COLOR_THEME } from "@/lib/theme";
+import UpdateUserModal from "./UpdateUserModal";
 
 interface UsersListProps {
   users: User[];

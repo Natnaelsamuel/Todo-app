@@ -44,13 +44,12 @@
 
 
 "use client";
-import React from "react";
-import { ModeToggle } from "./ModeToggle";
-import { usePathname } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
-import { LogOut } from "lucide-react";
 import { COLOR_THEME } from "@/lib/theme";
+import { LogOut } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { usePathname } from "next/navigation";
+import { ModeToggle } from "./ModeToggle";
 
 const NavBar = () => {
   const pathname = usePathname();
