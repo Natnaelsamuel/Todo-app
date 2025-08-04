@@ -6,7 +6,7 @@ export async function middleware(request: NextRequest) {
   const token = await getToken({ req: request })
   const { pathname } = request.nextUrl
 
-  const publicRoutes = ['/signin', '/signup', '/']
+  const publicRoutes = ['/signin', '/signup', '/', '/api/auth']
   
   // If no token and trying to access protected route, redirect to signin
   if (!token && !publicRoutes.some(route => pathname.startsWith(route))) {
@@ -36,7 +36,14 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/home',
-    '/admin/:path*',
+    /*
+     * Match all request paths except for the ones starting with:
+     * - api/auth (auth API routes)
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * - public files (public folder)
+     */
+    '/((?!api/auth|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ]
 }
